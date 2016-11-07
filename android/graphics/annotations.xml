@@ -1,0 +1,5 @@
+<root>
+  <item name='android.graphics.Color RED'>
+    <annotation name='java.lang.annotation.Deprecated' />
+  </item>
+</root>

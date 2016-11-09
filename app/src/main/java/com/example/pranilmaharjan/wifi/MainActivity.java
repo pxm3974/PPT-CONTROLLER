@@ -1,35 +1,27 @@
 package com.example.pranilmaharjan.wifi;
 
 
+import android.content.Intent;
 import android.os.Bundle;
-
 import android.support.v7.app.ActionBarActivity;
-
-import android.widget.RelativeLayout;
+import android.os.StrictMode;
 import android.widget.Button;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.graphics.Color;
 import android.widget.EditText;
-import android.content.res.Resources;
-import android.util.TypedValue;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import android.util.Log;
+import java.io.DataOutputStream;
+
 
 public class MainActivity extends ActionBarActivity {
 
-    String ip_address="192.168.0.6";
-    //String ip_address="10182228";
-    //String ip_address="7618724120";
-    String port_address="8080";
-    private Socket client;
+    Socket client;
     private PrintWriter printwriter;
     private static final String TAG = "MyActivity";
 
@@ -37,7 +29,11 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        if (android.os.Build.VERSION.SDK_INT > 9)
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
 
         Button button=(Button)findViewById(R.id.button);
         final EditText myEditText1=(EditText)findViewById(R.id.IPAddress);
@@ -46,33 +42,34 @@ public class MainActivity extends ActionBarActivity {
         button.setOnClickListener(
                 new Button.OnClickListener(){
                     public void onClick(View v) {
-                        if (myEditText1.getText().toString().equals(ip_address) && myEditText2.getText().toString().equals(port_address)) {
-                            Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
-                            try {
-                                Log.d(TAG, "We are inside try block");
-                                String message="You are now connected ";
-                                //client = new Socket("10.182.2.28", 8080);  //connect to server
-                                client=new Socket("192.168.0.6", 8080);
-                                //client=new Socket("76.187.241.20", 8080);
-                                printwriter = new PrintWriter(client.getOutputStream(), true);
-                                printwriter.write(message);  //write the message to output stream
-                                Log.d(TAG, "We are after printwriter");
-                                printwriter.flush();
-                                printwriter.close();
-                                client.close();   //10closing the co10nnection
+                        String ip_address = myEditText1.getText().toString();
+                        Integer port_address;
+                        port_address = Integer.parseInt(myEditText2.getText().toString());
+                        //ip_address=10.0.2.2 and port=8888 and 10.0.3.2 for Genymotion
+                        Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
+                        try {
+                            Log.d(TAG, "We are inside try block");
+                            String message = "You are now connected ";
+                            //connect to server
+                            client = new Socket(ip_address, port_address);
+                            startActivity(new Intent(getApplicationContext(), remote_control.class));
+                            DataOutputStream dout=new DataOutputStream(client.getOutputStream());
+                            dout.writeUTF("Hello");
+                            dout.flush();
+                            dout.close();
 
-                            } catch (UnknownHostException e) {
-                                e.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Wrong Credentials", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "We are after printwriter");
+
+                            //client.close();   //10closing the co10nnection
+
+                        } catch (UnknownHostException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
                     }
+
                 });
-
-
     }
 
     @Override

@@ -5,4 +5,10 @@
     <string name="IpAddress">IP Address:</string>
     <string name="port">Port:</string>
     <string name="connect">Connect</string>
+    <string name="pause">Pause</string>
+    <string name="next">Next</string>
+    <string name="start">Start</string>
+    <string name="previous">Previous</string>
+    <string name="pageNO">PageNo</string>
+    <string name="title_activity_remote_control">remote_control</string>
 </resources>

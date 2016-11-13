@@ -52,7 +52,20 @@ public class MainActivity extends ActionBarActivity {
                             String message = "You are now connected ";
                             //connect to server
                             client = new Socket(ip_address, port_address);
-                            startActivity(new Intent(getApplicationContext(), remote_control.class));
+
+                            Bundle b = new Bundle();
+                            b.putString("ip_address",ip_address);
+                            b.putInt("port_address", port_address);
+
+                            Intent in=new Intent(getApplicationContext(), remote_control.class);
+
+                            in.putExtras(b);
+                            startActivity(in);
+
+
+
+
+                            //startActivity(new Intent(getApplicationContext(), remote_control.class));
                             DataOutputStream dout=new DataOutputStream(client.getOutputStream());
                             dout.writeUTF("Hello");
                             dout.flush();

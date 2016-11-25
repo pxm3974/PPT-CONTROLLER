@@ -45,9 +45,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/pageNO"
-        android:id="@+id/pageNo"
-        android:layout_alignBaseline="@+id/next_slide"
-        android:layout_alignBottom="@+id/next_slide"
+        android:text="@string/currentpageNO"
+        android:id="@+id/currentpageNo"
+        android:layout_below="@+id/next_slide"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/totalpageNo"
+        android:id="@+id/totalpageNo"
+        android:layout_above="@+id/next_slide"
+        android:layout_alignRight="@+id/currentpageNo"
+        android:layout_alignEnd="@+id/currentpageNo" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/go_slide"
+        android:id="@+id/go_slide"
+        android:layout_above="@+id/start_slide"
+        android:layout_alignLeft="@+id/start_slide"
+        android:layout_alignStart="@+id/start_slide" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/slide_No"
+        android:layout_above="@+id/go_slide"
+        android:layout_alignRight="@+id/go_slide"
+        android:layout_alignEnd="@+id/go_slide"
+        android:layout_toRightOf="@+id/previous_slide"
+        android:layout_toEndOf="@+id/previous_slide"
+        android:inputType="number" />
 </RelativeLayout>

@@ -24,6 +24,11 @@ public class MainActivity extends ActionBarActivity {
     Socket client;
     private PrintWriter printwriter;
     private static final String TAG = "MyActivity";
+    public String ip_address;
+    public Integer port_address;
+    public Button button;
+    public EditText myEditText1;
+    public EditText myEditText2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,51 +40,22 @@ public class MainActivity extends ActionBarActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
-        Button button=(Button)findViewById(R.id.button);
-        final EditText myEditText1=(EditText)findViewById(R.id.IPAddress);
-        final EditText myEditText2=(EditText)findViewById(R.id.port);
+        initializeData();     // initializing buttons and textfields
 
         button.setOnClickListener(
                 new Button.OnClickListener(){
                     public void onClick(View v) {
-                        String ip_address = myEditText1.getText().toString();
-                        Integer port_address;
-                        port_address = Integer.parseInt(myEditText2.getText().toString());
+                        ip_port();
                         //ip_address=10.0.2.2 and port=8888 and 10.0.3.2 for Genymotion
-                        Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
-                        try {
-                            Log.d(TAG, "We are inside try block");
-                            String message = "You are now connected ";
-                            //connect to server
-                            client = new Socket(ip_address, port_address);
+                        //if(ip_address.equals("10.0.2.15")&& port_address==8888){
+                            Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
+                            connection();
+                        //}
+                        /*else
+                        {
+                            Toast.makeText(getApplicationContext(), "Error....Please enter again", Toast.LENGTH_SHORT).show();
+                        }*/
 
-                            Bundle b = new Bundle();
-                            b.putString("ip_address",ip_address);
-                            b.putInt("port_address", port_address);
-
-                            Intent in=new Intent(getApplicationContext(), remote_control.class);
-
-                            in.putExtras(b);
-                            startActivity(in);
-
-
-
-
-                            //startActivity(new Intent(getApplicationContext(), remote_control.class));
-                            DataOutputStream dout=new DataOutputStream(client.getOutputStream());
-                            dout.writeUTF("Hello");
-                            dout.flush();
-                            dout.close();
-
-                            Log.d(TAG, "We are after printwriter");
-
-                            //client.close();   //10closing the co10nnection
-
-                        } catch (UnknownHostException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
                     }
 
                 });
@@ -105,5 +81,52 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void initializeData()
+    {
+        button=(Button)findViewById(R.id.button);
+        myEditText1=(EditText)findViewById(R.id.IPAddress);
+        myEditText2=(EditText)findViewById(R.id.port);
+    }
+
+    public void ip_port(){
+        ip_address = myEditText1.getText().toString();
+        port_address = Integer.parseInt(myEditText2.getText().toString());
+    }
+
+    public void connection()
+    {
+        try {
+            Log.d(TAG, "We are inside try block");
+            String message = "You are now connected ";
+            //connect to server
+            client = new Socket(ip_address, port_address);
+
+            Bundle b = new Bundle();
+            b.putString("ip_address",ip_address);
+            b.putInt("port_address", port_address);
+
+            Intent in=new Intent(getApplicationContext(), remote_control.class);
+
+            in.putExtras(b);
+            startActivity(in);
+
+            //startActivity(new Intent(getApplicationContext(), remote_control.class));
+            DataOutputStream dout=new DataOutputStream(client.getOutputStream());
+            dout.writeUTF("Hello");
+            dout.flush();
+            dout.close();
+
+            Log.d(TAG, "We are after printwriter");
+
+            client.close();   //10closing the co10nnection
+
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

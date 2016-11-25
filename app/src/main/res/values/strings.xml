@@ -9,6 +9,8 @@
     <string name="next">Next</string>
     <string name="start">Start</string>
     <string name="previous">Previous</string>
-    <string name="pageNO">PageNo</string>
+    <string name="currentpageNO">currentpageNo</string>
     <string name="title_activity_remote_control">remote_control</string>
+    <string name="go_slide">Go</string>
+    <string name="totalpageNo">totalpageNo</string>
 </resources>

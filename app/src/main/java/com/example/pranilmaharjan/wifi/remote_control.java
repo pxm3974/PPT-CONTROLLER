@@ -11,12 +11,10 @@ import android.content.Intent;
 import android.widget.Toast;
 import java.io.DataOutputStream;
 import java.net.Socket;
-import java.io.ObjectInputStream;
+
 import java.io.DataInputStream;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class remote_control extends AppCompatActivity {
@@ -108,6 +106,7 @@ public class remote_control extends AppCompatActivity {
 
     public String sendMessage(String message,String ipadd,int port){
         String reply=null;
+        String page=null;
         DataInputStream stdIn = new DataInputStream(System.in);
         try {
             client = new Socket(ipadd, port);
@@ -118,16 +117,52 @@ public class remote_control extends AppCompatActivity {
 
             DataInputStream dam=new DataInputStream(client.getInputStream());
             Log.d(TAG, ": " + dam);
-            byte[] bs = new byte[20];
+
+            List<String> strArray = new ArrayList<String>();
+
+            byte[] bs = new byte[4];
             dam.read(bs);
             Log.d(TAG, ":"+ bs);
+
+            for (byte b:bs)
+            {
+                // convert byte into character
+                char c = (char)b;
+                if (Character.isDigit(c)) {
+                    String val=String.valueOf(c);
+                    strArray.add(val);
+                }
+
+            }
+            //String byte_Str = new String(bs);
+
+            Log.d(TAG, ": " + strArray);
+
+            if (strArray.size()==2)
+            {
+                reply=strArray.get(0);
+                page=strArray.get(1);
+            }
+
+            if ( strArray.size()==3)
+            {
+                reply=strArray.get(0);
+                page=strArray.get(1).concat(strArray.get(2));
+            }
+
+            if(strArray.size()==4)
+            {
+                reply=strArray.get(0).concat(strArray.get(1));
+                page=strArray.get(2).concat(strArray.get(3));
+            }
+            /*
             char c=(char)bs[0];
             Log.d(TAG, ": " + c);
             reply=String.valueOf(c);
             char m=(char)bs[1];
             Log.d(TAG, ":" +m);
 
-            String page=String.valueOf(m);
+            String page=String.valueOf(m);*/
             /*for (byte b:bs)
             {
                 // convert byte into character

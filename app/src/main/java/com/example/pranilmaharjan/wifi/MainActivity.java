@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.os.StrictMode;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +20,7 @@ import android.util.Log;
 import java.io.DataOutputStream;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     Socket client;
     private static final String TAG = "MyActivity";
@@ -33,7 +34,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (android.os.Build.VERSION.SDK_INT > 9)
+        if (android.os.Build.VERSION.SDK_INT > 9)    //Gaining the strict access for internet
         {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -41,7 +42,7 @@ public class MainActivity extends ActionBarActivity {
 
         initializeData();     // initializing buttons and textfields
 
-        button.setOnClickListener(
+        button.setOnClickListener(       //button onclick listener
                 new Button.OnClickListener(){
                     public void onClick(View v) {
                         ip_port();
@@ -74,14 +75,14 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void initializeData()
+    public void initializeData()       //initializing the buttons and EditText fields
     {
         button=(Button)findViewById(R.id.button);
         myEditText1=(EditText)findViewById(R.id.IPAddress);
         myEditText2=(EditText)findViewById(R.id.port);
     }
 
-    public void ip_port(){
+    public void ip_port(){       //initializing IpAddress and port
         ip_address = myEditText1.getText().toString();
         //port_address = Integer.parseInt(myEditText2.getText().toString());
         if(ip_address.isEmpty())
@@ -99,7 +100,7 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-    public void connection()
+    public void connection()     //trying
     {
         String m=null;
         try {

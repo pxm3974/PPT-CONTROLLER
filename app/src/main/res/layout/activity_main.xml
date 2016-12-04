@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/relativelayout"
-    android:background="@drawable/abc_textfield_activated_mtrl_alpha">
+    android:background="@android:color/background_light">
 
     <TextView
         android:layout_width="wrap_content"
@@ -12,7 +13,7 @@
         android:text="@string/IpAddress"
         android:id="@+id/textView"
         android:textSize="20dp"
-        android:textColor="#00F"
+        android:textColor="@color/colorPrimary"
         android:layout_alignBottom="@+id/textView2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -27,10 +28,12 @@
         android:id="@+id/textView2"
         android:layout_marginTop="275dp"
         android:textSize="20dp"
-        android:textColor="#00F"
+        android:textColor="@color/colorPrimary"
         android:layout_alignParentTop="true"
         android:layout_alignLeft="@+id/textView"
-        android:layout_alignStart="@+id/textView" />
+        android:layout_alignStart="@+id/textView"
+        android:layout_toStartOf="@+id/IPAddress"
+        android:layout_toLeftOf="@+id/IPAddress" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -47,8 +50,9 @@
         android:ems="10"
         android:id="@+id/port"
         android:layout_alignTop="@+id/textView2"
-        android:layout_alignRight="@+id/Credentials"
-        android:layout_alignEnd="@+id/Credentials" />
+        android:layout_toRightOf="@+id/textView2"
+        android:layout_alignRight="@+id/IPAddress"
+        android:layout_alignEnd="@+id/IPAddress" />
 
     <Button
         android:layout_width="wrap_content"
@@ -58,27 +62,34 @@
         android:layout_below="@+id/port"
         android:layout_alignLeft="@+id/IPAddress"
         android:layout_alignStart="@+id/IPAddress"
-        android:layout_marginTop="54dp" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText"
-        android:layout_alignBottom="@+id/IPAddress"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginTop="54dp"
+        android:textColor="@color/colorPrimary" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/welcome"
         android:id="@+id/Credentials"
-        android:textColor="#00F"
+        android:textColor="@color/colorPrimary"
         android:textSize="40dp"
         android:gravity="center"
         android:layout_marginBottom="49dp"
         android:layout_above="@+id/textView"
         android:layout_alignLeft="@+id/textView"
-        android:layout_alignStart="@+id/textView" />
+        android:layout_alignStart="@+id/textView"
+        android:layout_alignRight="@+id/IPAddress"
+        android:layout_alignEnd="@+id/IPAddress" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:id="@+id/bottom"
+        android:layout_height="wrap_content"
+        android:text="@string/bottom"
+        android:textStyle="normal|bold"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp" />
 
 </RelativeLayout>

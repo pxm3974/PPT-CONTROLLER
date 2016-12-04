@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">WIFI</string>
+    <string name="app_name">PRESENTER</string>
     <string name="action_settings">Settings</string>
-    <string name="welcome">Enter Credentials</string>
+    <string name="welcome">CREDENTIALS</string>
     <string name="IpAddress">IP Address:</string>
     <string name="port">Port:</string>
     <string name="connect">Connect</string>
@@ -13,4 +13,5 @@
     <string name="title_activity_remote_control">remote_control</string>
     <string name="go_slide">Go</string>
     <string name="totalpageNo">totalpageNo</string>
+    <string name="bottom">Make sure computer and smartphone is connected to the same WIFI</string>
 </resources>

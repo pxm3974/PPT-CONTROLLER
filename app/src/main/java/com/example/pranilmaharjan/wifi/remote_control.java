@@ -12,7 +12,6 @@ import android.widget.Toast;
 import java.io.DataOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-
 import java.io.DataInputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +36,13 @@ public class remote_control extends AppCompatActivity {
         Log.d(TAG, "We are in remote_control");
         Intent in = getIntent();
 
-        Bundle b = in.getExtras();
+        Bundle b = in.getExtras();      // IpAddress and port number of the Pc thats running the server
         final String ipadd = b.get("ip_address").toString();
         final  int  port = Integer.parseInt(b.get("port_address").toString());
 
-        Toast.makeText(getApplicationContext(),"connected to server....",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(),"connected to server....",Toast.LENGTH_SHORT).show();
+
+        // ppt start button listener
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,6 +53,7 @@ public class remote_control extends AppCompatActivity {
             }
         });
 
+        // ppt stop button listener
         pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,6 +63,7 @@ public class remote_control extends AppCompatActivity {
             }
         });
 
+        // ppt next page button listener
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,6 +73,7 @@ public class remote_control extends AppCompatActivity {
             }
         });
 
+        // ppt previous button listener
         previous.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,6 +83,7 @@ public class remote_control extends AppCompatActivity {
             }
         });
 
+        // ppt go to specific page button listener
         go.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -98,6 +103,7 @@ public class remote_control extends AppCompatActivity {
 
     }
 
+    // initialization of buttons and textviews
     public void initializeData()
     {
         start=(Button)findViewById(R.id.start_slide);
@@ -113,7 +119,7 @@ public class remote_control extends AppCompatActivity {
     }
 
 
-
+    // communicating with the server for changing the slides.
     public String sendMessage(String message,String ipadd,int port){
         String reply=null;
         String page=null;
@@ -121,7 +127,7 @@ public class remote_control extends AppCompatActivity {
         try {
             //client = new Socket(ipadd, port);
             client = new Socket();
-            client.connect(new InetSocketAddress(ipadd,port), 10000);
+            client.connect(new InetSocketAddress(ipadd,port), 15000);
 
             DataOutputStream dt = new DataOutputStream(client.getOutputStream());
             dt.writeUTF(message);

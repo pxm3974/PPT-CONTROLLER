@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.content.Intent;
 import android.widget.Toast;
 import java.io.DataOutputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import java.io.DataInputStream;
@@ -19,6 +20,7 @@ import java.util.List;
 
 public class remote_control extends AppCompatActivity {
 
+    int initial_total_number;
     Socket client;
     public Button start, pause, next, previous, go;
     public TextView currentpage, totalpage;
@@ -80,9 +82,15 @@ public class remote_control extends AppCompatActivity {
         go.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                String message=sendMessage(slideToGo.getText().toString(),ipadd,port);
-                Log.d(TAG, ": " + message);
-                currentpage.setText(message);
+                int num=Integer.parseInt(slideToGo.getText().toString());
+                if (num>initial_total_number){
+                    Toast.makeText(getApplicationContext(), "There is no such slide", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    String message = sendMessage(slideToGo.getText().toString(), ipadd, port);
+                    Log.d(TAG, ": " + message);
+                    currentpage.setText(message);
+                }
                 slideToGo.setText("");
             }
         });
@@ -97,9 +105,11 @@ public class remote_control extends AppCompatActivity {
         next=(Button)findViewById(R.id.next_slide);
         previous=(Button)findViewById(R.id.previous_slide);
         go=(Button)findViewById(R.id.go_slide);
-        totalpage=(TextView)findViewById(R.id.totalpageNo);
-        currentpage=(TextView)findViewById(R.id.currentpageNo);
+        totalpage=(TextView)findViewById(R.id.totalpageNO);
+        currentpage=(TextView)findViewById(R.id.currentpageNO);
         slideToGo=(EditText)findViewById(R.id.slide_No);
+
+        //start.setText("");
     }
 
 
@@ -107,9 +117,12 @@ public class remote_control extends AppCompatActivity {
     public String sendMessage(String message,String ipadd,int port){
         String reply=null;
         String page=null;
-        DataInputStream stdIn = new DataInputStream(System.in);
+        String m=null;
         try {
-            client = new Socket(ipadd, port);
+            //client = new Socket(ipadd, port);
+            client = new Socket();
+            client.connect(new InetSocketAddress(ipadd,port), 10000);
+
             DataOutputStream dt = new DataOutputStream(client.getOutputStream());
             dt.writeUTF(message);
 
@@ -120,10 +133,25 @@ public class remote_control extends AppCompatActivity {
 
             List<String> strArray = new ArrayList<String>();
 
-            byte[] bs = new byte[4];
+            byte[] bs = new byte[8];
             dam.read(bs);
             Log.d(TAG, ":"+ bs);
+            StringBuilder sb=new StringBuilder();
+            for (byte b:bs)
+            {
+                // convert byte into character
+                char c = (char)b;
+                if (Character.isDigit(c) || c==',') {
+                    sb.append(c);
+                }
 
+            }
+            Log.d(TAG, ": " + sb);
+            String string = sb.toString();
+            String[] parts = string.split(",");
+            reply = parts[0];
+            page = parts[1];
+            /*
             for (byte b:bs)
             {
                 // convert byte into character
@@ -154,31 +182,19 @@ public class remote_control extends AppCompatActivity {
             {
                 reply=strArray.get(0).concat(strArray.get(1));
                 page=strArray.get(2).concat(strArray.get(3));
-            }
-            /*
-            char c=(char)bs[0];
-            Log.d(TAG, ": " + c);
-            reply=String.valueOf(c);
-            char m=(char)bs[1];
-            Log.d(TAG, ":" +m);
-
-            String page=String.valueOf(m);*/
-            /*for (byte b:bs)
-            {
-                // convert byte into character
-                char c = (char)b;
-                Log.d(TAG, ": " + c);
-                // print the character
-
             }*/
-           //String response =br.readLine();
-            //Log.d(TAG, ": " + response);
+            initial_total_number=Integer.parseInt(page);
+
             totalpage.setText(page);
             client.close();
         } catch (Exception e) {
             e.printStackTrace();
+            m="error";
         }
-
+        if (m=="error")
+        {
+            Toast.makeText(getApplicationContext(), "Error....", Toast.LENGTH_SHORT).show();
+        }
         return reply;
     }
 

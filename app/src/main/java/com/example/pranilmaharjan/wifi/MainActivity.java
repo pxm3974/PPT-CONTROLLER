@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.view.View;
 import android.widget.Toast;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import android.util.Log;
@@ -22,7 +22,6 @@ import java.io.DataOutputStream;
 public class MainActivity extends ActionBarActivity {
 
     Socket client;
-    private PrintWriter printwriter;
     private static final String TAG = "MyActivity";
     public String ip_address;
     public Integer port_address;
@@ -46,16 +45,8 @@ public class MainActivity extends ActionBarActivity {
                 new Button.OnClickListener(){
                     public void onClick(View v) {
                         ip_port();
-                        //ip_address=10.0.2.2 and port=8888 and 10.0.3.2 for Genymotion
-                        //if(ip_address.equals("10.0.2.15")&& port_address==8888){
-                            Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
-                            connection();
-                        //}
-                        /*else
-                        {
-                            Toast.makeText(getApplicationContext(), "Error....Please enter again", Toast.LENGTH_SHORT).show();
-                        }*/
-
+                        Toast.makeText(getApplicationContext(), "Redirecting...", Toast.LENGTH_SHORT).show();
+                        connection();
                     }
 
                 });
@@ -92,16 +83,32 @@ public class MainActivity extends ActionBarActivity {
 
     public void ip_port(){
         ip_address = myEditText1.getText().toString();
-        port_address = Integer.parseInt(myEditText2.getText().toString());
+        //port_address = Integer.parseInt(myEditText2.getText().toString());
+        if(ip_address.isEmpty())
+        {
+            Toast.makeText(getApplicationContext(), "Enter proper credentials", Toast.LENGTH_SHORT).show();
+
+        }
+        try{
+
+            port_address = Integer.parseInt(myEditText2.getText().toString());
+
+        } catch (NumberFormatException e) {
+            Toast.makeText(getApplicationContext(), "Enter proper credentials", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public void connection()
     {
+        String m=null;
         try {
             Log.d(TAG, "We are inside try block");
             String message = "You are now connected ";
             //connect to server
-            client = new Socket(ip_address, port_address);
+            //client = new Socket(ip_address, port_address);
+            client = new Socket();
+            client.connect(new InetSocketAddress(ip_address, port_address), 10000);
 
             Bundle b = new Bundle();
             b.putString("ip_address",ip_address);
@@ -124,8 +131,15 @@ public class MainActivity extends ActionBarActivity {
 
         } catch (UnknownHostException e) {
             e.printStackTrace();
+            m="error";
         } catch (IOException e) {
             e.printStackTrace();
+            m="error";
+        }
+
+        if (m=="error")
+        {
+            Toast.makeText(getApplicationContext(), "Error....Please enter again", Toast.LENGTH_SHORT).show();
         }
 
     }

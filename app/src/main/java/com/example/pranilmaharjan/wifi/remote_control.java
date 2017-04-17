@@ -1,3 +1,5 @@
+
+
 package com.example.pranilmaharjan.wifi;
 
 import android.os.Bundle;
@@ -40,7 +42,7 @@ public class remote_control extends AppCompatActivity {
         final String ipadd = b.get("ip_address").toString();
         final  int  port = Integer.parseInt(b.get("port_address").toString());
 
-        //Toast.makeText(getApplicationContext(),"connected to server....",Toast.LENGTH_SHORT).show();
+
 
         // ppt start button listener
         start.setOnClickListener(new View.OnClickListener() {
@@ -157,38 +159,7 @@ public class remote_control extends AppCompatActivity {
             String[] parts = string.split(",");
             reply = parts[0];
             page = parts[1];
-            /*
-            for (byte b:bs)
-            {
-                // convert byte into character
-                char c = (char)b;
-                if (Character.isDigit(c)) {
-                    String val=String.valueOf(c);
-                    strArray.add(val);
-                }
-
-            }
-            //String byte_Str = new String(bs);
-
-            Log.d(TAG, ": " + strArray);
-
-            if (strArray.size()==2)
-            {
-                reply=strArray.get(0);
-                page=strArray.get(1);
-            }
-
-            if ( strArray.size()==3)
-            {
-                reply=strArray.get(0);
-                page=strArray.get(1).concat(strArray.get(2));
-            }
-
-            if(strArray.size()==4)
-            {
-                reply=strArray.get(0).concat(strArray.get(1));
-                page=strArray.get(2).concat(strArray.get(3));
-            }*/
+         
             initial_total_number=Integer.parseInt(page);
 
             totalpage.setText(page);

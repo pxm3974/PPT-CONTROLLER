@@ -1,3 +1,5 @@
+
+
 package com.example.pranilmaharjan.wifi;
 
 
@@ -107,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "We are inside try block");
             String message = "You are now connected ";
             //connect to server
-            //client = new Socket(ip_address, port_address);
             client = new Socket();
             client.connect(new InetSocketAddress(ip_address, port_address), 10000);
 
